@@ -23,14 +23,54 @@ import './App.css'
 function App() {
 
   const [task, setTask] = React.useState(null);
+  const [error, setError] = React.useState('');
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/todos/1')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Не вдалося отримати дані з сервера');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setTask(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message || 'Сталася помилка при завантаженні');
+        setLoading(false);
+      });
 
   }, []);
   
   return (<div className='container'>
-    <h1>React Homework</h1>
-  </div>)
+   <div className="card">
+        <h1>React Homework</h1>
+
+        {loading && <p>Завантаження завдання...</p>}
+
+        {error && <p className="error">Помилка: {error}</p>}
+
+        {task && !loading && !error && (
+          <div className="task">
+            <h2>Завдання #{task.id}</h2>
+            <h3>{task.title}</h3>
+            <p>
+              <strong>Статус:</strong>{' '}
+              {task.completed ? (
+                <span style={{ color: 'green' }}>Виконано</span>
+              ) : (
+                <span style={{ color: 'orange' }}>Не виконано</span>
+              )}
+            </p>
+            <p><strong>Користувач ID:</strong> {task.userId}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default App;
