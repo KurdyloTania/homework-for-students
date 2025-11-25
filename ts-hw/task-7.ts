@@ -8,9 +8,17 @@
     b) Створити тип ProductWithoutDescription за допомогою Omit, який містить всі ключі, крім description.
 */
 
-interface Product {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
+// interface Product {
+//     id: number;
+//     title: string;
+//     price: number;
+//     description: string;
+// }
+
+type ProductPreview = Pick<Product, 'title' | 'price'>;
+
+type ProductWithoutDescription = Omit<Product, 'description'>;
+
+interface FullProduct extends Product {
+    description: string; // перевизначаємо як обов’язкове
 }
