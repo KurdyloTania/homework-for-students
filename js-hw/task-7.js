@@ -12,4 +12,11 @@ function subtract(x, y) {
     return x - y;
 }
 
+function calculate(a, b, callback) {
+    return callback(a, b);
+}
+
+console.log(calculate(13, 10, add));      
+console.log(calculate(13, 10, subtract)); 
+
 
